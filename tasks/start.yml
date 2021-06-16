@@ -1,0 +1,63 @@
+---
+- name: Start the docker-compose environment - {{ compose_magento_project_name }}
+  docker_compose:
+    project_src: "{{ compose_magento_base_directory }}"
+    state: present
+    recreate: always
+    nocache: true
+  tags:
+    - docker_compose
+    - start
+
+- name: Add mysql to wait_for services list - {{ compose_magento_project_name }}
+  set_fact:
+    compose_magento_compose_services_wait: "{{ compose_magento_compose_services_wait }} + [{{ compose_magento_port_mysql }}]"
+  tags:
+    - set_fact
+    - start
+  when: compose_magento_image_mysql != false
+
+- name: Add elasticsearch to wait_for services list - {{ compose_magento_project_name }}
+  set_fact:
+    compose_magento_compose_services_wait: "{{ compose_magento_compose_services_wait }} + [{{ compose_magento_port_elasticsearch }}]"
+  tags:
+    - set_fact
+    - start
+  when: compose_magento_image_elasticsearch != false
+
+- name: Add redis to wait_for services list
+  set_fact:
+    compose_magento_compose_services_wait: "{{ compose_magento_compose_services_wait }} + [{{ compose_magento_port_redis }}]"
+  tags:
+    - set_fact
+    - start
+  when: compose_magento_image_redis != false
+
+- name: Add rabbitmq to wait_for services list - {{ compose_magento_project_name }}
+  set_fact:
+    compose_magento_compose_services_wait: "{{ compose_magento_compose_services_wait }} + [{{ compose_magento_port_rabbitmq }}]"
+  tags:
+    - set_fact
+    - start
+  when: compose_magento_image_rabbitmq != false
+
+- name: Add nginx to wait_for services list - {{ compose_magento_project_name }}
+  set_fact:
+    compose_magento_compose_services_wait: "{{ compose_magento_compose_services_wait }} + [{{ compose_magento_port_nginx }}]"
+  tags:
+    - set_fact
+    - start
+  when: compose_magento_image_nginx != false
+
+- name: Wait for services to come up - {{ compose_magento_project_name }}
+  wait_for:
+    host: "{{ compose_magento_project_gateway }}"
+    port: "{{ port }}"
+    state: present
+    timeout: 300
+  tags:
+    - wait_for
+    - start
+  loop: "{{ compose_magento_compose_services_wait }}"
+  loop_control:
+    loop_var: port

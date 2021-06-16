@@ -1,0 +1,12 @@
+---
+- name: Clone source code repository - {{ compose_magento_project_name }}
+  git:
+    clone: true
+    update: true
+    depth: "{{ compose_magento_git_depth }}"
+    dest: "{{ compose_magento_source_directory }}"
+    repo: "{{ compose_magento_git_url }}"
+    version: "{{ compose_magento_git_version }}"
+  tags:
+    - git
+  when: compose_magento_git_skip == false

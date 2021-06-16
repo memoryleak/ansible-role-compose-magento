@@ -1,0 +1,14 @@
+{% if compose_magento_image_rabbitmq is not false %}
+  rabbitmq:
+    image: {{ compose_magento_image_rabbitmq }}
+    networks:
+      - net_{{ compose_magento_project_prefix }}
+    environment:
+      RABBITMQ_DEFAULT_USER: {{ compose_magento_user_rabbitmq }}
+      RABBITMQ_DEFAULT_PASS: {{ compose_magento_password_rabbitmq }}
+      RABBITMQ_DEFAULT_VHOST: {{ compose_magento_vhost_rabbitmq }}
+    ports:
+      - {{ compose_magento_project_gateway }}:15672:15672
+      - {{ compose_magento_project_gateway }}:5671:5671
+      - {{ compose_magento_project_gateway }}:5672:5672
+{% endif %}

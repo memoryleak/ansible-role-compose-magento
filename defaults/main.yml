@@ -1,0 +1,124 @@
+---
+compose_magento_project_name: magento2
+compose_magento_project_domain: magento2.local
+compose_magento_project_prefix: mg2
+compose_magento_project_gateway: 172.20.0.1
+compose_magento_hosts_file: /etc/hosts
+compose_magento_base_directory: "/var/www/{{ compose_magento_project_name }}"
+compose_magento_source_directory: "{{ compose_magento_base_directory }}/src"
+compose_magento_data_directory: "{{ compose_magento_base_directory }}/data"
+compose_magento_config_directory: "{{ compose_magento_base_directory }}/etc"
+compose_magento_bin_directory: "{{ compose_magento_base_directory }}/bin"
+
+compose_magento_composer_command: composer
+compose_magento_composer_no_dev: false
+compose_magento_compose_clean: false
+compose_magento_compose_services_wait: []
+
+compose_magento_nginx_document_root: "/var/www/html"
+compose_magento_nginx_use_domain: false
+compose_magento_nginx_fastcgi_name: "fastcgi_{{ compose_magento_project_prefix }}"
+compose_magento_nginx_upstream: "{{ compose_magento_project_gateway }}:9000"
+
+compose_magento_image_nginx: "memoryleak/nginx:alpine"
+compose_magento_image_php: "memoryleak/php:7.4"
+compose_magento_image_mysql: "mysql:8"
+compose_magento_image_elasticsearch: "memoryleak/elasticsearch:7.6.2"
+compose_magento_image_redis: "redis:6"
+compose_magento_image_rabbitmq: "rabbitmq:3.8-management"
+compose_magento_image_mailhog: "mailhog/mailhog"
+
+compose_magento_host_nginx: "nginx"
+compose_magento_host_php: "php"
+compose_magento_host_mysql: "mysql"
+compose_magento_host_elasticsearch: "elasticsearch"
+compose_magento_host_redis: "redis"
+compose_magento_host_rabbitmq: "rabbitmq"
+compose_magento_host_mailhog: "mailhog"
+
+compose_magento_user_mysql: "magento"
+compose_magento_user_rabbitmq: "magento"
+
+compose_magento_password_mysql: "magento"
+compose_magento_password_rabbitmq: "magento"
+
+compose_magento_vhost_rabbitmq: "/magento"
+compose_magento_database_mysql: "magento"
+
+compose_magento_port_mysql: "3306"
+compose_magento_port_elasticsearch: "9200"
+compose_magento_port_redis: "6379"
+compose_magento_port_rabbitmq: "5672"
+compose_magento_port_nginx: "80"
+compose_magento_port_php: "9000"
+compose_magento_port_mailhog: "8025"
+
+
+compose_magento_git_depth: 1  # values below 1 ignored
+compose_magento_git_url: https://github.com/magento/magento2.git
+compose_magento_git_version: "2.4"
+compose_magento_git_force: false
+compose_magento_git_skip: false
+compose_magento_deploy_command_pre:
+  - "cd {{ compose_magento_nginx_document_root }}"
+
+compose_magento_deploy_command_post:
+  - "cd {{ compose_magento_nginx_document_root }}"
+  - "php -d memory_limit=-1 -d display_errors=1 bin/magento cache:clean"
+  - "php -d memory_limit=-1 -d display_errors=1 bin/magento setup:upgrade"
+  - "php -d memory_limit=-1 -d display_errors=1 bin/magento setup:di:compile"
+  - "find var generated pub/static pub/media app/etc -type f -exec chmod g+w {} +"
+  - "find var generated pub/static pub/media app/etc -type d -exec chmod g+ws {} +"
+  - "bin/magento maintenance:disable"
+  - "bin/magento cache:clean"
+
+compose_magento_install_command_extra: []
+compose_magento_install_command:
+  - "php"
+
+  - "-d memory_limit=-1"
+  - "-d display_errors=1"
+
+  - "bin/magento setup:install"
+
+  - "--backend-frontname='admin'"
+  - "--cleanup-database"
+  - "--currency='USD'"
+  - "--language='en_US'"
+  - "--timezone='Europe/Zurich'"
+  - "--use-rewrites='1'"
+  - "--use-secure-admin='0'"
+  - "--use-secure='0'"
+
+  - "--admin-email='admin@exmaple.com'"
+  - "--admin-firstname='Admin'"
+  - "--admin-lastname='Nistrator'"
+  - "--admin-password='admin123'"
+  - "--admin-user='admin'"
+
+  - "--amqp-host='{{ compose_magento_host_rabbitmq }}'"
+  - "--amqp-password='{{ compose_magento_password_rabbitmq }}'"
+  - "--amqp-port='{{ compose_magento_port_rabbitmq }}'"
+  - "--amqp-user='{{ compose_magento_user_rabbitmq }}'"
+  - "--amqp-virtualhost='{{ compose_magento_vhost_rabbitmq }}'"
+
+  - "--db-host='{{ compose_magento_host_mysql }}'"
+  - "--db-name='{{ compose_magento_database_mysql }}'"
+  - "--db-password='{{ compose_magento_password_mysql }}'"
+  - "--db-user='{{ compose_magento_user_mysql }}'"
+
+  - "--base-url-secure='https://{{ compose_magento_project_domain }}/'"
+  - "--base-url='http://{{ compose_magento_project_domain }}/'"
+
+  - "--cache-backend='redis'"
+  - "--cache-backend-redis-db='2'"
+  - "--cache-backend-redis-server='{{ compose_magento_host_redis }}'"
+
+
+  - "--page-cache='redis'"
+  - "--page-cache-redis-db='3'"
+  - "--page-cache-redis-server='{{ compose_magento_host_redis }}'"
+
+  - "--session-save='redis'"
+  - "--session-save-redis-db='1'"
+  - "--session-save-redis-host='{{ compose_magento_host_redis }}'"

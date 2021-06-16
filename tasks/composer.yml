@@ -1,0 +1,19 @@
+---
+- name: Install composer dependencies - {{ compose_magento_project_name }}
+  composer:
+    command: install
+    ignore_platform_reqs: true
+    working_dir: "{{ compose_magento_source_directory }}"
+    no_dev: "{{ compose_magento_composer_no_dev }}"
+  tags:
+    - composer
+  when: compose_magento_composer_command == 'composer'
+
+- name: Install composer dependencies using different composer command - {{ compose_magento_project_name }}
+  shell:
+    chdir: "{{ compose_magento_source_directory }}"
+    cmd: "{{ compose_magento_composer_command }} install --ignore-platform-reqs {{ '--no-dev' if compose_magento_composer_no_dev }}"
+  tags:
+    - shell
+    - composer
+  when: compose_magento_composer_command != 'composer'

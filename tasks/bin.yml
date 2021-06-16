@@ -1,0 +1,18 @@
+---
+- name: Create database import script - {{ compose_magento_project_name }}
+  template:
+    dest: "{{ compose_magento_bin_directory }}/db-import"
+    mode: 0755
+    src: "bin/db-import.sh.j2"
+  tags:
+    - template
+    - bin
+
+- name: Create installation script - {{ compose_magento_project_name }}
+  template:
+    dest: "{{ compose_magento_bin_directory }}/magento-install"
+    mode: 0755
+    src: "bin/magento-install.sh.j2"
+  tags:
+    - template
+    - bin

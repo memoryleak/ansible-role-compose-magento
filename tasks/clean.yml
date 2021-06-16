@@ -1,0 +1,11 @@
+---
+- name: Stop the docker-compose environment - {{ compose_magento_project_name }}
+  docker_compose:
+    project_src: "{{ compose_magento_base_directory }}"
+    state: absent
+    remove_orphans: true
+    remove_volumes: true
+  tags:
+    - docker_compose
+    - clean
+  when: compose_magento_compose_clean | bool

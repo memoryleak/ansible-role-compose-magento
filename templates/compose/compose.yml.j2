@@ -1,0 +1,29 @@
+---
+version: "3.5"
+
+services:
+{% include 'service-redis.yml.j2' %}
+{% include 'service-rabbitmq.yml.j2' %}
+{% include 'service-elasticsearch.yml.j2' %}
+{% include 'service-mailhog.yml.j2' %}
+{% include 'service-mysql.yml.j2' %}
+{% include 'service-php.yml.j2' %}
+{% include 'service-nginx.yml.j2' %}
+
+volumes:
+{% if compose_magento_image_mysql is not false %}
+  vol_{{ compose_magento_project_prefix }}_mysql:
+    driver: local
+{% endif %}
+{% if compose_magento_image_elasticsearch is not false %}
+  vol_{{ compose_magento_project_prefix }}_elasticsearch:
+    driver: local
+{% endif %}
+
+networks:
+  net_{{ compose_magento_project_prefix }}:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+        - subnet: "{{ compose_magento_project_gateway }}/24"

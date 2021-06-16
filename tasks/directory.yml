@@ -1,0 +1,90 @@
+---
+- name: Check if {{ compose_magento_base_directory }} exists
+  stat:
+    path: "{{ compose_magento_base_directory }}"
+  register: compose_magento_base_directory_stat
+  tags:
+    - stat
+    - directory
+
+- name: Create {{ compose_magento_base_directory }}
+  file:
+    path: "{{ compose_magento_base_directory }}"
+    state: directory
+  tags:
+    - file
+    - directory
+  when: compose_magento_base_directory_stat.stat.exists == false
+
+#
+- name: Delete {{ compose_magento_source_directory }}
+  file:
+    path: "{{ compose_magento_base_directory }}"
+    state: absent
+  tags:
+    - file
+    - directory
+  when: compose_magento_git_force | bool
+
+- name: Check if {{ compose_magento_source_directory }} exists
+  stat:
+    path: "{{ compose_magento_source_directory }}"
+  register: compose_magento_source_directory_stat
+  tags:
+    - stat
+    - directory
+  failed_when: compose_magento_source_directory_stat.stat.exists and compose_magento_git_skip == false
+
+#
+- name: Check if {{ compose_magento_data_directory }} exists
+  stat:
+    path: "{{ compose_magento_data_directory }}"
+  register: compose_magento_data_directory_stat
+  tags:
+    - stat
+    - directory
+
+- name: Create {{ compose_magento_data_directory }}
+  file:
+    path: "{{ compose_magento_data_directory }}"
+    state: directory
+  tags:
+    - file
+    - directory
+  when: compose_magento_data_directory_stat.stat.exists == false
+
+#
+- name: Check if {{ compose_magento_bin_directory }} exists
+  stat:
+    path: "{{ compose_magento_bin_directory }}"
+  register: compose_magento_bin_directory_stat
+  tags:
+    - stat
+    - directory
+
+- name: Create {{ compose_magento_bin_directory }}
+  file:
+    path: "{{ compose_magento_bin_directory }}"
+    state: directory
+  tags:
+    - file
+    - directory
+  when: compose_magento_bin_directory_stat.stat.exists == false
+
+#
+- name: Check if {{ compose_magento_config_directory }} exists
+  stat:
+    path: "{{ compose_magento_config_directory }}"
+  register: compose_magento_config_directory_stat
+  tags:
+    - stat
+    - directory
+
+- name: Create {{ compose_magento_config_directory }}
+  file:
+    path: "{{ compose_magento_config_directory }}"
+    state: directory
+  tags:
+    - file
+    - directory
+  when: compose_magento_config_directory_stat.stat.exists == false

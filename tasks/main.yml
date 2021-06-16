@@ -1,0 +1,56 @@
+---
+# tasks file for memoryleak.compose-magento
+- name: Include directories task.
+  include_tasks: "directory.yml"
+  tags:
+    - include_tasks
+    - directory
+
+- name: Include clean task.
+  include_tasks: "clean.yml"
+  tags:
+    - include_tasks
+    - clean
+
+
+- name: Include git task.
+  include_tasks: "git.yml"
+  tags:
+    - include_tasks
+    - git
+
+- name: Include host task.
+  include_tasks: "hosts.yml"
+  tags:
+    - include_tasks
+    - hosts
+
+- name: Include nginx task.
+  include_tasks: "nginx.yml"
+  tags:
+    - include_tasks
+    - nginx
+
+- name: Include compose task.
+  include_tasks: "compose.yml"
+  tags:
+    - include_tasks
+    - compose
+
+- name: Include composer task.
+  include_tasks: "composer.yml"
+  tags:
+    - include_tasks
+    - composer
+
+- name: Include bin task.
+  include_tasks: "bin.yml"
+  tags:
+    - include_tasks
+    - bin
+
+- name: Include start task.
+  include_tasks: "start.yml"
+  tags:
+    - include_tasks
+    - start

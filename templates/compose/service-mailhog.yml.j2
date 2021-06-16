@@ -1,0 +1,9 @@
+{% if compose_magento_image_mailhog is not false %}
+  mailhog:
+    image: {{ compose_magento_image_mailhog }}
+    networks:
+      - net_{{ compose_magento_project_prefix }}
+    ports:
+      - {{ compose_magento_project_gateway }}:1025:1025
+      - {{ compose_magento_project_gateway }}:8025:8025
+{% endif %}

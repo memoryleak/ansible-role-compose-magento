@@ -1,0 +1,15 @@
+{% if compose_magento_image_php is not false %}
+  php:
+    depends_on:
+      - elasticsearch
+      - mysql
+      - rabbitmq
+      - redis
+    image: {{ compose_magento_image_php }}
+    networks:
+      - net_{{ compose_magento_project_prefix }}
+    ports:
+      - {{ compose_magento_project_gateway }}:9000:9000
+    volumes:
+      - {{ compose_magento_source_directory }}:{{ compose_magento_nginx_document_root }}
+{% endif %}

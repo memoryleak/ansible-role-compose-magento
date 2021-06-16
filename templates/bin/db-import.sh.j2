@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+if [[ -z "$1" ]]; then
+    echo "Import SQL file into mysql"
+    echo ""
+    echo "Usage: db-import <path-to-sql-file>"
+    exit
+fi
+
+FILE_PATH=$(realpath "$1")
+
+echo "Importing file $FILE_PATH..."
+pv $FILE_PATH | docker-compose -f {{ compose_magento_base_directory }}/docker-compose.yml exec -T mysql mysql -D {{ compose_magento_database_mysql }} -u root -p"{{ compose_magento_password_mysql }}"

@@ -1,0 +1,16 @@
+{% if compose_magento_image_mysql is not false %}
+  mysql:
+    image: {{ compose_magento_image_mysql }}
+    networks:
+      - net_{{ compose_magento_project_prefix }}
+    command: --default-authentication-plugin=mysql_native_password --character-set-server=utf8mb4 --collation-server=utf8mb4_unicode_ci
+    ports:
+      - {{ compose_magento_project_gateway }}:3306:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: {{ compose_magento_password_mysql }}
+      MYSQL_DATABASE: {{ compose_magento_database_mysql }}
+      MYSQL_USER: {{ compose_magento_user_mysql }}
+      MYSQL_PASSWORD: {{ compose_magento_password_mysql }}
+    volumes:
+      - vol_{{ compose_magento_project_prefix }}_mysql:/var/lib/mysql
+{% endif %}

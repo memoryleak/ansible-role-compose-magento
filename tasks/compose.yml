@@ -1,0 +1,8 @@
+---
+- name: Create docker-compose file - {{ compose_magento_project_name }}
+  template:
+    dest: "{{ compose_magento_base_directory }}/docker-compose.yml"
+    src: "compose/compose.yml.j2"
+  tags:
+    - template
+    - compose

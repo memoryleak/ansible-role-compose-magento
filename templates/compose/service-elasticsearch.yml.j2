@@ -1,0 +1,10 @@
+{% if compose_magento_image_elasticsearch is not false %}
+  elasticsearch:
+    image: {{ compose_magento_image_elasticsearch }}
+    networks:
+      - net_{{ compose_magento_project_prefix }}
+    ports:
+      - {{ compose_magento_project_gateway }}:9200:9200
+    volumes:
+      - vol_{{ compose_magento_project_prefix }}_elasticsearch:/usr/share/elasticsearch/data
+{% endif %}

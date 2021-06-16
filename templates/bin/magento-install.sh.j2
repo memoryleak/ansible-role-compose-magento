@@ -1,0 +1,9 @@
+#!/usr/bin/env sh
+{% for deploy_pre in compose_magento_deploy_command_pre %}
+{{ deploy_pre }}
+{% endfor %}
+
+{{ compose_magento_install_command | join(" \\\n") }} {{ compose_magento_install_command_extra | join(" \\\n") }}
+{% for deploy_post in compose_magento_deploy_command_post %}
+{{ deploy_post }}
+{% endfor %}

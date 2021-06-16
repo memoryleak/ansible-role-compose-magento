@@ -1,0 +1,8 @@
+{% if compose_magento_image_redis is not false %}
+  redis:
+    image: {{ compose_magento_image_redis }}
+    networks:
+      - net_{{ compose_magento_project_prefix }}
+    ports:
+      - {{ compose_magento_project_gateway }}:6379:6379
+{% endif %}
