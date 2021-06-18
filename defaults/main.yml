@@ -59,18 +59,20 @@ compose_magento_git_url: https://github.com/magento/magento2.git
 compose_magento_git_version: "2.4"
 compose_magento_git_force: false
 compose_magento_git_skip: false
+compose_magento_deploy_mode: "default"
 compose_magento_deploy_command_pre:
   - "cd {{ compose_magento_nginx_document_root }}"
 
 compose_magento_deploy_command_post:
   - "cd {{ compose_magento_nginx_document_root }}"
+  - "bin/magento deploy:mode:set -s {{ compose_magento_deploy_mode }}"
   - "php -d memory_limit=-1 -d display_errors=1 bin/magento cache:clean"
   - "php -d memory_limit=-1 -d display_errors=1 bin/magento setup:upgrade"
   - "php -d memory_limit=-1 -d display_errors=1 bin/magento setup:di:compile"
+  - "php -d memory_limit=-1 -d display_errors=1 bin/magento maintenance:disable"
+  - "php -d memory_limit=-1 -d display_errors=1 bin/magento cache:clean"
   - "find var generated pub/static pub/media app/etc -type f -exec chmod g+w {} +"
   - "find var generated pub/static pub/media app/etc -type d -exec chmod g+ws {} +"
-  - "bin/magento maintenance:disable"
-  - "bin/magento cache:clean"
 
 compose_magento_install_command_extra: []
 compose_magento_install_command:
@@ -82,7 +84,6 @@ compose_magento_install_command:
   - "bin/magento setup:install"
 
   - "--backend-frontname='admin'"
-  - "--cleanup-database"
   - "--currency='USD'"
   - "--language='en_US'"
   - "--timezone='Europe/Zurich'"
@@ -113,7 +114,6 @@ compose_magento_install_command:
   - "--cache-backend='redis'"
   - "--cache-backend-redis-db='2'"
   - "--cache-backend-redis-server='{{ compose_magento_host_redis }}'"
-
 
   - "--page-cache='redis'"
   - "--page-cache-redis-db='3'"
