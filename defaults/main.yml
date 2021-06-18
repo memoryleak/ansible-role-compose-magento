@@ -68,7 +68,6 @@ compose_magento_deploy_command_post:
   - "bin/magento deploy:mode:set -s {{ compose_magento_deploy_mode }}"
   - "php -d memory_limit=-1 -d display_errors=1 bin/magento cache:clean"
   - "php -d memory_limit=-1 -d display_errors=1 bin/magento setup:upgrade"
-  - "php -d memory_limit=-1 -d display_errors=1 bin/magento setup:di:compile"
   - "php -d memory_limit=-1 -d display_errors=1 bin/magento maintenance:disable"
   - "php -d memory_limit=-1 -d display_errors=1 bin/magento cache:clean"
   - "find var generated pub/static pub/media app/etc -type f -exec chmod g+w {} +"
