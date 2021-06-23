@@ -3,7 +3,9 @@ upstream {{ compose_magento_nginx_fastcgi_name }} {
 }
 
 server {
-    listen 80;
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
     {% if compose_magento_nginx_use_domain %}
     server_name {{ compose_magento_project_domain }};
     {% endif %}

@@ -3,7 +3,10 @@
 {{ deploy_pre }}
 {% endfor %}
 
-{{ compose_magento_install_command | join(" \\\n") }} {{ compose_magento_install_command_extra | join(" \\\n") }}
+{% for install_command in compose_magento_install_command  %}
+{{ install_command }}{% if not loop.last %} \
+{% endif %}
+{% endfor %}
 
 {% for deploy_post in compose_magento_deploy_command_post %}
 {{ deploy_post }}

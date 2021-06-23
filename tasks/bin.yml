@@ -8,11 +8,44 @@
     - template
     - bin
 
+- name: Merge commands and commands extra
+  set_fact:
+    compose_magento_install_command: "{{ compose_magento_install_command + compose_magento_install_command_extra }}"
+  tags:
+    - set_fact
+    - custom tags
+
 - name: Create installation script - {{ compose_magento_project_name }}
   template:
     dest: "{{ compose_magento_bin_directory }}/magento-install"
     mode: 0755
     src: "bin/magento-install.sh.j2"
+  tags:
+    - template
+    - bin
+- name: Create magento script - {{ compose_magento_project_name }}
+  template:
+    dest: "{{ compose_magento_bin_directory }}/magento"
+    mode: 0755
+    src: "bin/magento.sh.j2"
+  tags:
+    - template
+    - bin
+
+- name: Create MySQL script - {{ compose_magento_project_name }}
+  template:
+    dest: "{{ compose_magento_bin_directory }}/mysql"
+    mode: 0755
+    src: "bin/mysql.sh.j2"
+  tags:
+    - template
+    - bin
+
+- name: Create MySQLDump script - {{ compose_magento_project_name }}
+  template:
+    dest: "{{ compose_magento_bin_directory }}/mysqldump"
+    mode: 0755
+    src: "bin/mysqldump.sh.j2"
   tags:
     - template
     - bin

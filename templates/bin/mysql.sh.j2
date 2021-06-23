@@ -1,0 +1,2 @@
+#!/usr/bin/env bash
+docker-compose -f {{ compose_magento_base_directory }}/docker-compose.yml exec -T mysql mysql -D {{ compose_magento_database_mysql }} -uroot -p"{{ compose_magento_password_mysql }}" "$@"
