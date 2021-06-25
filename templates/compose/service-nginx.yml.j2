@@ -9,8 +9,11 @@
       - net_{{ compose_magento_project_prefix }}
     ports:
       - {{ compose_magento_project_gateway }}:80:80
+      - {{ compose_magento_project_gateway }}:443:443
     volumes:
       - {{ compose_magento_source_directory }}:{{ compose_magento_nginx_document_root }}
       - {{ compose_magento_config_directory }}/default.conf:/etc/nginx/http.d/default.conf
-      - /run/php-fpm/www.sock:/run/php-fpm/www.sock
+      {% for nginx_mount in compose_magento_nginx_mounts %}
+      - {{ nginx_mount.src }}:{{ nginx_mount.dst }}
+      {% endfor %}
 {% endif %}

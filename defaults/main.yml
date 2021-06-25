@@ -16,9 +16,13 @@ compose_magento_compose_clean: false
 compose_magento_compose_services_wait: []
 
 compose_magento_nginx_document_root: "{{ compose_magento_source_directory }}"
-compose_magento_nginx_use_domain: false
+compose_magento_nginx_use_domain: true
 compose_magento_nginx_fastcgi_name: "fastcgi_{{ compose_magento_project_prefix }}"
 compose_magento_nginx_upstream: "server {{ compose_magento_project_gateway }}:9000"
+# Additional mounts for nginx
+# - src: <path>
+#   dest: <path>
+compose_magento_nginx_mounts: []
 
 compose_magento_image_nginx: "memoryleak/nginx:alpine"
 compose_magento_image_php: "memoryleak/php:7.4"
