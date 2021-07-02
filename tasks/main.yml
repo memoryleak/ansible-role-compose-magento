@@ -12,7 +12,6 @@
     - include_tasks
     - clean
 
-
 - name: Include git task.
   include_tasks: "git.yml"
   tags:

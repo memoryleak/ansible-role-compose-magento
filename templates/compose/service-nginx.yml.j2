@@ -13,7 +13,7 @@
     volumes:
       - {{ compose_magento_source_directory }}:{{ compose_magento_nginx_document_root }}
       - {{ compose_magento_config_directory }}/default.conf:/etc/nginx/conf.d/default.conf
-      {% for nginx_mount in compose_magento_nginx_mounts %}
+{% for nginx_mount in compose_magento_nginx_mounts %}
       - {{ nginx_mount.src }}:{{ nginx_mount.dst }}
-      {% endfor %}
+{% endfor %}
 {% endif %}

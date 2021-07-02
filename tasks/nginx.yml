@@ -2,7 +2,7 @@
 - name: Create nginx virtual host file - {{ compose_magento_project_name }}
   template:
     dest: "{{ compose_magento_config_directory }}/default.conf"
-    src: "nginx/vhost.conf.j2"
+    src: "{{ compose_magento_nginx_vhost_template }}"
   tags:
     - template
     - nginx
