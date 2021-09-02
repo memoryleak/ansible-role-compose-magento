@@ -2,13 +2,27 @@
 version: "3.5"
 
 services:
+{% if compose_image_redis is not false %}
 {% include 'service-redis.yml.j2' %}
+{% endif %}
+{% if compose_image_rabbitmq is not false %}
 {% include 'service-rabbitmq.yml.j2' %}
+{% endif %}
+{% if compose_image_elasticsearch is not false %}
 {% include 'service-elasticsearch.yml.j2' %}
+{% endif %}
+{% if compose_image_mailhog is not false %}
 {% include 'service-mailhog.yml.j2' %}
+{% endif %}
+{% if compose_image_mysql is not false %}
 {% include 'service-mysql.yml.j2' %}
+{% endif %}
+{% if compose_image_php is not false %}
 {% include 'service-php.yml.j2' %}
+{% endif %}
+{% if compose_image_nginx is not false %}
 {% include 'service-nginx.yml.j2' %}
+{% endif %}
 
 volumes:
 {% if compose_magento_image_mysql is not false %}

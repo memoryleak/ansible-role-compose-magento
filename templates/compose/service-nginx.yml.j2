@@ -1,4 +1,4 @@
-{% if compose_environment_nginx is not false %}
+{% if compose_magento_image_nginx is not false %}
   nginx:
 {% if compose_magento_image_php is not false %}
     depends_on:
