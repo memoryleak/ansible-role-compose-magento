@@ -127,7 +127,7 @@ compose_magento_install_command:
   - "--session-save-redis-db='1'"
   - "--session-save-redis-host='{{ compose_magento_host_redis }}'"
 
-compose_magento_nginx_config_extra: "XYZ"
+compose_magento_nginx_config_extra: ""
 
 compose_magento_nginx_vhost_extra: |
   # Deny access to sensitive files
